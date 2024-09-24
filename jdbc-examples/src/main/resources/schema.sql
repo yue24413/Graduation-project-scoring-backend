@@ -20,7 +20,7 @@ create table if not exists `user`
     `group`     tinyint unsigned null , -- unsigned无符号，即大于等于
     student     json not null comment '{q,projectTitle,teacherId,teacherName}',
     teahcer     json not null comment '{total,A,C}',
-    department  json null comment '{"depId", "name",}', -- 可空，admin
+    department  json null comment '{depId, name}', -- 可空，admin
     create_time datetime not null default current_timestamp,
     update_time datetime not null default current_timestamp on update current_timestamp,
     unique (account),
@@ -41,8 +41,8 @@ create table if not exists `process`
     `desc`      varchar(100) null ,
     department_id char(19) not null ,
     point       tinyint unsigned not null ,
-    department  json not null comment '{"depId", "name",}',
-    items       json not null comment '[{"number", "name", "point", "description"}]',
+    department  json not null comment '{depId, name}',
+    items       json not null comment '[{number, name, point, description}]',
     # 针对谁?
     type        char(4) not null ,
     attach      json null comment '[{number,name,exp}]', -- 扩展名校验
