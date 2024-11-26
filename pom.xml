@@ -12,5 +12,6 @@
 
     <modules>
         <module>jdbc-examples</module>
+        <module>webflux-r2dbc-examples</module>
     </modules>
 </project>
