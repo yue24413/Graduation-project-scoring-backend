@@ -17,16 +17,16 @@ create table if not exists `user`
     account     varchar(12) not null , -- 账号
     password    varchar(65) not null,-- 密码签名进行校验65位
     role        char(4) not null , -- 存储角色，随机权值
-    `group`     tinyint unsigned null , -- unsigned无符号，即大于等于
-    student     json not null comment '{q,projectTitle,teacherId,teacherName}',
-    teahcer     json not null comment '{total,A,C}',
-    department  json null comment '{depId, name}', -- 可空，admin
+    group_number  tinyint unsigned null, -- unsigned无符号，即大于等于
+    student     json  null comment '{"teacherId", "teacherName", "queueNumber", "projectTitle"}',
+    teacher     json not null comment '{total,A,C}',
+    department_id char(19)         not null,
+    description   varchar(200)     null,
     create_time datetime not null default current_timestamp,
     update_time datetime not null default current_timestamp on update current_timestamp,
     unique (account),
-    index (((cast(department ->> '$.depId' as char(19)) collate utf8mb4_bin)),role), -- 根据某专业下角色，得到user
-    index ((cast(student ->> '$.teacherId' as char(19)) collate utf8mb4_bin)) -- 给老师id会找到这些user
-
+    index ((cast(student ->> '$.teacherId' as char(19)) collate utf8mb4_bin)),
+    index (department_id, role, group_number)
 -- 账号密码在业务层面比较
 );
 
@@ -39,13 +39,12 @@ create table if not exists `process`
     id          char(19)    not null primary key,
     name        varchar(20) not null,
     `desc`      varchar(100) null ,
+    auth        char(5) not null,
     department_id char(19) not null ,
     point       tinyint unsigned not null ,
-    department  json not null comment '{depId, name}',
     items       json not null comment '[{number, name, point, description}]',
     # 针对谁?
-    type        char(4) not null ,
-    attach      json null comment '[{number,name,exp}]', -- 扩展名校验
+    student_attach json null comment '[{number,name,exp}]', -- 扩展名校验
     insert_time datetime    not null default current_timestamp,
     update_time datetime    not null default current_timestamp on update current_timestamp,
     index (department_id)
@@ -63,7 +62,7 @@ create table if not exists `process_score`
     student_id  char(19) not null,
     process_id  char(19) not null,
     teacher_id  char(19) not null,
-    scores      json not null comment '[teacherName,scores,detail:{number,score}]',
+    detail      json not null comment '[teacherName,scores,detail:{number,score}]',
     insert_time datetime    not null default current_timestamp,
     update_time datetime    not null default current_timestamp on update current_timestamp,
     unique (student_id,process_id,teacher_id)

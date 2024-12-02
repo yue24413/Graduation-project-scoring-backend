@@ -1,5 +1,6 @@
 package com.example.webfluxr2dbcexamples.dox;
-import com.fasterxml.jackson.annotation.JsonProperty;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,25 +15,18 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class User {
-    public static final String ROLE_STUDENT = "qpCf";
-    public static final String ROLE_TEACHER = "kU4T";
-    public static final String ROLE_ADMIN = "R2md";
+public class ProcessScore {
     @Id
     @CreatedBy
     private String id;
-    private String name;
-    private String account;
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String password;
-    private String role;
-    private Integer groupNumber;
-    private String student;
-    private String teacher;
-    private String departmentId;
-    private String description;
+    private String studentId;
+    private String teacherId;
+    private String processId;
+    private String detail;
     @ReadOnlyProperty
+    @JsonIgnore
     private LocalDateTime insertTime;
     @ReadOnlyProperty
+    @JsonIgnore
     private LocalDateTime updateTime;
 }
