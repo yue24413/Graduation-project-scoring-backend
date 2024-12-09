@@ -19,14 +19,17 @@ import java.time.LocalDateTime;
 public class Process {
     public static final String TUTOR = "AsImV";
     public static final String REVIEW = "zg0NS";
+
     @Id
     @CreatedBy
     private String id;
     private String name;
-    private String description;
+    // json
+    private String items;
+    private int point;
     private String auth;
     private String departmentId;
-    private int point;
+    // json
     private String studentAttach;
     @ReadOnlyProperty
     @JsonIgnore
