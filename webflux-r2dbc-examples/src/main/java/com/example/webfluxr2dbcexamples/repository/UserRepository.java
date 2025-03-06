@@ -10,8 +10,11 @@ import reactor.core.publisher.Mono;
 
 @Repository
 public interface UserRepository extends ReactiveCrudRepository<User,String> {
-    Mono<User> findByAccount(String account);
-    Mono<User> findByAccountAndDepartmentId(String account, String depid);
+
+    Mono<User> findByNumber(String number);
+
+    Mono<User> findByNumberAndDepartmentId(String number, String depid);
+
     Flux<User> findByRoleAndDepartmentIdOrderById(String role, String depid);
 
     @Query("""
@@ -34,9 +37,16 @@ public interface UserRepository extends ReactiveCrudRepository<User,String> {
 
     @Modifying
     @Query("""
-            update user u set u.password=:password where u.account=:account;
+            update user u set u.password=:password where u.number=:number;
             """)
-    Mono<Integer> updatePasswordByAccount(String account, String password);
+    Mono<Integer> updatePasswordByNumber(String number, String password);
 
+    @Modifying
+    @Query("""
+            update user u set u.group_number=:g where u.number=:number and u.department_id=:depid;
+            """)
+    Mono<Integer> updateGroup(String number, int g, String depid);
+
+    Mono<Integer> countByDepartmentId(String did);
 
 }
