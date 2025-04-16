@@ -73,7 +73,6 @@ public class TeacherService {
 
     @Transactional
     public Mono<Void> updateProcessScore(ProcessScore processScore) {
-
         return Mono.justOrEmpty(processScore.getId())
                 .flatMap(id -> processScoreRepository.updateDetail(id, processScore.getDetail()))
                 .switchIfEmpty(processScoreRepository.save(processScore).thenReturn(1))
@@ -88,6 +87,8 @@ public class TeacherService {
         return processScoreRepository.findByGroup(groupNumber).collectList();
     }
 
+    //userRepository.updatePasswordByNumber 方法返回的本身就是 Mono<Integer> 类型，
+    // 刚好符合 updatePassword 方法的返回类型要求，所以不需要使用 .then() 操作符来忽略数据并转换为 Mono<Void> 类型。
     @Transactional
     public Mono<Integer> updatePassword(String number) {
         return userRepository.updatePasswordByNumber(number, passwordEncoder.encode(number));

@@ -25,12 +25,12 @@ public class User {
     private String number;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
-    private String role;
-    private Integer groupNumber;
     private String student;
     private String teacher;
-    private String departmentId;
     private String description;
+    private String departmentId;
+    private String role;
+    private Integer groupNumber;
     @ReadOnlyProperty
     private LocalDateTime insertTime;
     @ReadOnlyProperty
